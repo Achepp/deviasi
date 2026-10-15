@@ -104,15 +104,7 @@ export default function OperatorProfilePage() {
         </div>
       )}
 
-      {/* Page Heading */}
-      <div className="px-0.5">
-        <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
-          Profil Operator
-        </h2>
-        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">
-          Informasi identitas dan konfigurasi akun operasional.
-        </p>
-      </div>
+      
 
       {/* Hidden File Input for Ubah Foto */}
       <input
@@ -168,25 +160,6 @@ export default function OperatorProfilePage() {
             <span>{displayStatus}</span>
           </span>
         </div>
-
-        {/* Meta Identitas (User ID & Email) */}
-        <div className="mt-3.5 flex flex-col items-center gap-1 text-xs text-slate-500 dark:text-slate-400">
-          <div className="flex items-center gap-1.5">
-            <IdCard className="w-3.5 h-3.5 text-slate-400" />
-            <span className="text-slate-400">User ID:</span>
-            <span className="font-mono font-bold text-slate-700 dark:text-slate-200">
-              {displayUserId}
-            </span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <Mail className="w-3.5 h-3.5 text-slate-400" />
-            <span className="text-slate-600 dark:text-slate-300">
-              {displayEmail}
-            </span>
-          </div>
-        </div>
-
-        {/* Tombol Biru Ubah Foto */}
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
