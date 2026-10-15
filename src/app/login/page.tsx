@@ -394,7 +394,7 @@ export default function LoginPage() {
                     type="text"
                     value={identifier}
                     onChange={(e) => setIdentifier(e.target.value)}
-                    placeholder="admin@packaging.local atau USR-001"
+                    placeholder="Masukkan NPK"
                     required
                     autoComplete="username"
                     className="w-full pl-10 pr-9 py-3 bg-[#F8FAFC] dark:bg-slate-950 border border-[#DCE6F2] dark:border-slate-800 rounded-xl text-sm text-[#102344] dark:text-white placeholder-[#60748F]/60 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#087ED0] focus:border-transparent transition-all"
