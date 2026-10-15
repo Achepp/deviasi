@@ -45,7 +45,7 @@ export default function OperatorHeader({ user, title }: OperatorHeaderProps) {
         </div>
         <div className="min-w-0">
           <h1 className="font-bold text-sm text-slate-900 dark:text-white leading-tight truncate">
-            {title || "Weighing App"}
+            {title || "Deviasi QC"}
           </h1>
           <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-none mt-0.5 truncate font-medium">
             Packaging Quality Control
