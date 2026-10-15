@@ -28,17 +28,12 @@ export default function OperatorHeader({ user, title }: OperatorHeaderProps) {
     };
   }, []);
 
-  // Get initials from user name (e.g. "Budi Santoso" -> "BS")
-  const initials = (user.nama || "OP")
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
+  // Get initials from user name (e.g. "Hermanto" -> "H")
+  const initials = (user.nama?.trim() ? user.nama.charAt(0) : "H").toUpperCase();
 
   return (
     <header className="sticky top-0 z-20 bg-white dark:bg-slate-900 border-b border-slate-200/90 dark:border-slate-800 px-3.5 sm:px-5 h-14 flex items-center justify-between transition-colors shadow-xs">
-      {/* Brand Identity */}
+      {/* Brand Identity: Logo di kiri, Judul, Subtitle */}
       <div className="flex items-center gap-2.5 min-w-0">
         <div className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-xs">
           <Scale className="w-4 h-4" />
@@ -53,38 +48,38 @@ export default function OperatorHeader({ user, title }: OperatorHeaderProps) {
         </div>
       </div>
 
-      {/* Right Controls: Online Pill, Theme Toggle, Profile Avatar */}
-      <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-        {/* Connection status pill */}
+      {/* Right Controls: Online Pill, Theme Toggle (Moon Icon), Profile Avatar (H) */}
+      <div className="flex items-center gap-2 shrink-0">
+        {/* Status Online dengan indikator hijau */}
         <div
-          className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold border ${
+          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold border ${
             isOnline
-              ? "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-500/20"
+              ? "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-200/80 dark:border-emerald-500/20"
               : "bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-200 dark:border-rose-500/20"
           }`}
-          title={isOnline ? "Koneksi Terhubung" : "Koneksi Terputus (Offline)"}
+          title={isOnline ? "Koneksi Terhubung (Online)" : "Koneksi Terputus (Offline)"}
         >
           {isOnline ? (
             <>
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="hidden xs:inline">Online</span>
+              <span>Online</span>
             </>
           ) : (
             <>
               <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
-              <span className="hidden xs:inline">Offline</span>
+              <span>Offline</span>
             </>
           )}
         </div>
 
-        {/* Theme toggle */}
+        {/* Tombol dark mode berbentuk icon bulan */}
         <ThemeToggle />
 
-        {/* Operator Profile Avatar Link */}
+        {/* Avatar kecil berisi huruf "H" */}
         <Link
           href="/operator/profile"
-          className="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-500/20 hover:bg-blue-100 dark:hover:bg-blue-500/30 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-500/30 flex items-center justify-center text-xs font-bold transition-colors cursor-pointer"
-          title={`Profil Operator: ${user.nama}`}
+          className="w-8 h-8 rounded-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center text-xs font-bold transition-all shadow-xs cursor-pointer select-none active:scale-95"
+          title={`Profil Operator: ${user.nama || "Hermanto"}`}
         >
           {initials}
         </Link>

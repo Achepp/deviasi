@@ -34,7 +34,7 @@ export default function OperatorBottomNav() {
   return (
     <nav
       aria-label="Navigasi Bawah Operator"
-      className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full sm:max-w-2xl md:max-w-3xl z-40 bg-white dark:bg-slate-900 border-t sm:border-x border-slate-200/90 dark:border-slate-800 shadow-[0_-2px_12px_rgba(0,0,0,0.05)] pb-[env(safe-area-inset-bottom,0px)] transition-colors"
+      className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full sm:max-w-md z-40 bg-white dark:bg-slate-900 border-t sm:border-x border-slate-200/90 dark:border-slate-800 shadow-[0_-2px_12px_rgba(0,0,0,0.05)] pb-[env(safe-area-inset-bottom,0px)] transition-colors"
     >
       <div className="w-full grid grid-cols-4 h-16">
         {navItems.map((item) => {
