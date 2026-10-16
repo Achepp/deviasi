@@ -4,42 +4,495 @@ import path from "path";
 import { User, MasterProduk, HasilTimbangan } from "@/types";
 import { DEFAULT_USERS } from "./auth";
 
-// Initial sample master products
+// Default Google Sheets targets (used automatically when env vars are not set in Vercel/Production)
+export const DEFAULT_SHEET_ID = "1T0_QKtgkU3d8DHYdUamDGZb5c--TQ_Wpjre1bPcol0g";
+export const DEFAULT_SCRIPT_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwejby2jp3fF-xYoUJ9S7-rOIipk7Fz9dHD9jio-U97yUd5EZbh0pIAb3S1V8YtmXsN/exec";
+
+export function getEffectiveSheetId(): string {
+  return process.env.GOOGLE_SHEET_ID?.trim() || DEFAULT_SHEET_ID;
+}
+
+export function getEffectiveWebAppUrl(): string {
+  return process.env.GOOGLE_SCRIPT_WEBAPP_URL?.trim() || DEFAULT_SCRIPT_WEBAPP_URL;
+}
+
+// Initial seed master products (69 real production products as offline/cold fallback)
 export const DEFAULT_PRODUCTS: MasterProduk[] = [
   {
-    batch: "BCH-2026-001",
-    nama_produk: "Susu Bubuk Vanilla 500g",
-    status: "Aktif",
-    keterangan: "Lini Kemas 1 - Sachet Aluminium",
+    "batch": "26059378",
+    "nama_produk": "ULTRAN P-01 SHP BROWN P503-1L",
+    "status": "Aktif",
+    "keterangan": ""
   },
   {
-    batch: "BCH-2026-002",
-    nama_produk: "Kopi Instan Premium 200g",
-    status: "Aktif",
-    keterangan: "Lini Kemas 2 - Standing Pouch",
+    "batch": "26051255",
+    "nama_produk": "PASTIGLOSS PMSS-512-0.9L",
+    "status": "Aktif",
+    "keterangan": ""
   },
   {
-    batch: "BCH-2026-003",
-    nama_produk: "Biskuit Gandum Cokelat 350g",
-    status: "Aktif",
-    keterangan: "Lini Kemas 3 - Box Karton",
+    "batch": "26063483",
+    "nama_produk": "11-256 AF PU THINNER-200LK",
+    "status": "Aktif",
+    "keterangan": ""
   },
   {
-    batch: "BCH-2026-004",
-    nama_produk: "Sereal Jagung Manis 250g",
-    status: "Aktif",
-    keterangan: "Lini Kemas 1 - Pouch Segel",
+    "batch": "26063652",
+    "nama_produk": "AKL-73201 EX UV PLUS NATURAL 15-20LP",
+    "status": "Aktif",
+    "keterangan": ""
   },
   {
-    batch: "BCH-2026-005",
-    nama_produk: "Teh Celup Melati 100g",
-    status: "Nonaktif",
-    keterangan: "Batch Disetop Sementara (QC Hold)",
+    "batch": "26038272",
+    "nama_produk": "ASLC-543-2K SB-0.225K",
+    "status": "Aktif",
+    "keterangan": ""
   },
+  {
+    "batch": "26063586",
+    "nama_produk": "ASLC-543-2K SB-0.9K",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26063664",
+    "nama_produk": "CEMENT POWDER PFC-235 EPOCEM-16KZ",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26059003",
+    "nama_produk": "CERAKOTE CTP-980 WB-0.8K",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26058446",
+    "nama_produk": "DECOR DF-97 GL BASE A-20LP",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26063663",
+    "nama_produk": "DSE-520 TERRACE GARDEN 162-1-25KP",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26062836",
+    "nama_produk": "ECO TEXTURE-25KP",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26062838",
+    "nama_produk": "ECO TEXTURE-4K",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26063069",
+    "nama_produk": "EPCH-50500 PS-4L",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26062305",
+    "nama_produk": "FIBERKOTE 888 WALNUT BROWN-2.5L",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26061882",
+    "nama_produk": "FIBERKOTE 889 BASE D-1L",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26061880",
+    "nama_produk": "FIBERKOTE 889 BASE D-2.5L",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26049861",
+    "nama_produk": "HARDENER MX-99-0.25L",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26062317",
+    "nama_produk": "IMPRA AWF-911 TEAK-1K",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26063073",
+    "nama_produk": "IMPRA BOND IBW-630-0.7K",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26059780",
+    "nama_produk": "IMPRA NC-141 CLEAR GLOSS-1L",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26063802",
+    "nama_produk": "L DZ 10157 (10%)",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26063381",
+    "nama_produk": "L WG 12 SEC P",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26061431",
+    "nama_produk": "MHRC-18102 SILVER ATM-5L",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26057799",
+    "nama_produk": "MHRC-18102 SILVER ATM-5L",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26063295",
+    "nama_produk": "ML-41310 CLEAR 15-20LP",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26063551",
+    "nama_produk": "ML-41340 CLEAR 30-20LP",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26062353",
+    "nama_produk": "MSS-41222 S-20LP",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26062617",
+    "nama_produk": "MULTIPOX MX-99 BASE B-16LP",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26062823",
+    "nama_produk": "MX-94-2K SB GREY-16KP",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26062824",
+    "nama_produk": "MX-94-2K SB GREY-16KP",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26063562",
+    "nama_produk": "MX-98-2K SB BASE D-0.75K",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26063703",
+    "nama_produk": "MX-98-2K SB LIGHT BLUE-0.75K",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26044892",
+    "nama_produk": "MX-98-2K SB LIGHT GREY-0.75K",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26062211",
+    "nama_produk": "NCL-11302 DN LC CLEAR 20-20LP",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26060194",
+    "nama_produk": "NCSS-11207-200LB",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26063651",
+    "nama_produk": "NCSS-11210-20LP",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26063545",
+    "nama_produk": "PASTIGLOSS PMSS-512-0.9L",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26074071",
+    "nama_produk": "HARDENER MX-99-0.25L",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26081240",
+    "nama_produk": "BETON ADMIXTURE PBAX-100-1K",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26080685",
+    "nama_produk": "ULTRAN P-05 BALI YELLOW Y14-1L",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26076130",
+    "nama_produk": "THINNER EPOXY-0.25L",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26081084",
+    "nama_produk": "IMPRA BOND IBW-630-0.7K",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26081469",
+    "nama_produk": "FIBERKOTE 888 BASE Y-2.5L",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26077764",
+    "nama_produk": "DECOFLAKE GRANITE GREY-9491-1K",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26079578",
+    "nama_produk": "PFT-215 M-2K SF LEAF GREEN 8416-17.5KP",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26080689",
+    "nama_produk": "ULTRAN P-05 DARK MAHONY Y505-1L",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26071806",
+    "nama_produk": "MX-99-2K MP SB CLEAR GLOSS-0.5L",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26079909",
+    "nama_produk": "MULTIPOX MX-99 BASE A-2L",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26073324",
+    "nama_produk": "STONKOTE SFC-633 CLEAR GLOSS-0.5L",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26072671",
+    "nama_produk": "HARDENER ASLC-543-0.1K",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26081819",
+    "nama_produk": "ULTRAPROOF 960 TRANSPARANT-1K",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26081817",
+    "nama_produk": "ULTRAPROOF 960 TRANSPARANT-1K",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26081818",
+    "nama_produk": "ULTRAPROOF 960 TRANSPARANT-4K",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26080186",
+    "nama_produk": "PASTIGLOSS HARDENER PMH-50-2L",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26080186",
+    "nama_produk": "PASTIGLOSS HARDENER PMH-50-2L",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26080186",
+    "nama_produk": "PASTIGLOSS HARDENER PMH-50-2L",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26081416",
+    "nama_produk": "PC 8Y3 SF-15LP",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26071713",
+    "nama_produk": "PC 8Y3-1L",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26080685",
+    "nama_produk": "ULTRAN P-05 BALI YELLOW Y14-1L",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26079875",
+    "nama_produk": "PFT-253-2K SB LEAF GREEN 8416-16KP",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26080601",
+    "nama_produk": "IMPRA NC-141 SEMI GLOSS-1L",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26080228",
+    "nama_produk": "FILLER PFT-615-22.1KZ",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26073324",
+    "nama_produk": "STONKOTE SFC-633 CLEAR GLOSS-0.5L",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26080073",
+    "nama_produk": "AEROSOL PRIMTOP DTM BLACK DOF-0.6L",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26078570",
+    "nama_produk": "TENNOKOTE SILICA SAND-2.5K",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26080067",
+    "nama_produk": "PFT-253-2K SB LEAF GREEN 8416-4K",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26081336",
+    "nama_produk": "THPU-71362 M-20LJ",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26082105",
+    "nama_produk": "HARDENER UPL-77 E-1L",
+    "status": "Aktif",
+    "keterangan": ""
+  },
+  {
+    "batch": "26078570",
+    "nama_produk": "TENNOKOTE SILICA SAND-2.5K",
+    "status": "Aktif",
+    "keterangan": ""
+  }
 ];
 
-// Initial weighing records (empty by default; data originates from actual production entries or Google Sheets)
-export const DEFAULT_SESSIONS: HasilTimbangan[] = [];
+// Initial weighing records
+export const DEFAULT_SESSIONS: HasilTimbangan[] = [
+  {
+    "id": "WT-20261014-KXRV5449",
+    "operator_id": "USR-002",
+    "operator": "Budi Santoso",
+    "nama_produk": "IMPRA WF-115 JATI-1K",
+    "batch": "26035807",
+    "no_mesin": "MS 01",
+    "no_timbangan": "TB 01",
+    "metode_kemas": "Botol PET",
+    "lower": 495,
+    "upper": 498,
+    "jam": "2026-10-14 13:30:35",
+    "timbang_1": 490,
+    "timbang_2": 494,
+    "timbang_3": 500,
+    "timbang_4": 486,
+    "timbang_5": null,
+    "timbang_6": null,
+    "timbang_7": null,
+    "timbang_8": null,
+    "timbang_9": null,
+    "timbang_10": null,
+    "timbang_11": null,
+    "timbang_12": null,
+    "timbang_13": null,
+    "timbang_14": null,
+    "timbang_15": null
+  },
+  {
+    "id": "WT-20261014-I3BT7144",
+    "operator_id": "USR-002",
+    "operator": "Budi Santoso",
+    "nama_produk": "IMPRA WF-115 JATI-1K",
+    "batch": "26045516",
+    "no_mesin": "MSN-01",
+    "no_timbangan": "TB-01",
+    "metode_kemas": "Box Karton",
+    "lower": 495,
+    "upper": 505,
+    "jam": "2026-10-14 06:02:47",
+    "timbang_1": 485,
+    "timbang_2": 500,
+    "timbang_3": 501,
+    "timbang_4": 470,
+    "timbang_5": 450,
+    "timbang_6": null,
+    "timbang_7": null,
+    "timbang_8": null,
+    "timbang_9": null,
+    "timbang_10": null,
+    "timbang_11": null,
+    "timbang_12": null,
+    "timbang_13": null,
+    "timbang_14": null,
+    "timbang_15": null
+  }
+];
 
 interface LocalDatabase {
   users: User[];
@@ -48,12 +501,18 @@ interface LocalDatabase {
   deletedIds?: string[];
 }
 
-const LOCAL_DB_PATH = path.join(process.cwd(), ".data", "database.json");
+const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.NEXT_RUNTIME === "edge");
+const LOCAL_DB_PATH = isServerless
+  ? path.join("/tmp", "weighing_database.json")
+  : path.join(process.cwd(), ".data", "database.json");
 
 function getLocalDb(): LocalDatabase {
   try {
-    if (!fs.existsSync(path.dirname(LOCAL_DB_PATH))) {
-      fs.mkdirSync(path.dirname(LOCAL_DB_PATH), { recursive: true });
+    const dir = path.dirname(LOCAL_DB_PATH);
+    if (!fs.existsSync(dir)) {
+      try {
+        fs.mkdirSync(dir, { recursive: true });
+      } catch {}
     }
     if (!fs.existsSync(LOCAL_DB_PATH)) {
       const initial: LocalDatabase = {
@@ -62,12 +521,15 @@ function getLocalDb(): LocalDatabase {
         hasilTimbangan: DEFAULT_SESSIONS,
         deletedIds: [],
       };
-      fs.writeFileSync(LOCAL_DB_PATH, JSON.stringify(initial, null, 2), "utf8");
+      try {
+        fs.writeFileSync(LOCAL_DB_PATH, JSON.stringify(initial, null, 2), "utf8");
+      } catch {}
       return initial;
     }
     const raw = fs.readFileSync(LOCAL_DB_PATH, "utf8");
     const parsed = JSON.parse(raw);
     if (!parsed.deletedIds) parsed.deletedIds = [];
+    if (!parsed.masterProduk || parsed.masterProduk.length === 0) parsed.masterProduk = DEFAULT_PRODUCTS;
     return parsed;
   } catch (err) {
     console.error("Error reading local db:", err);
@@ -82,19 +544,22 @@ function getLocalDb(): LocalDatabase {
 
 function saveLocalDb(data: LocalDatabase) {
   try {
-    if (!fs.existsSync(path.dirname(LOCAL_DB_PATH))) {
-      fs.mkdirSync(path.dirname(LOCAL_DB_PATH), { recursive: true });
+    const dir = path.dirname(LOCAL_DB_PATH);
+    if (!fs.existsSync(dir)) {
+      try {
+        fs.mkdirSync(dir, { recursive: true });
+      } catch {}
     }
     fs.writeFileSync(LOCAL_DB_PATH, JSON.stringify(data, null, 2), "utf8");
   } catch (err) {
-    console.error("Error saving local db:", err);
+    console.warn("Warning saving local db (may be read-only in serverless):");
   }
 }
 
 export function isGoogleSheetsConfigured(): boolean {
   const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
   const key = process.env.GOOGLE_PRIVATE_KEY;
-  const sheetId = process.env.GOOGLE_SHEET_ID;
+  const sheetId = getEffectiveSheetId();
   return Boolean(email && key && sheetId);
 }
 
@@ -114,38 +579,51 @@ function getGoogleSheetsClient() {
 
 export async function getStorageStatus() {
   const configured = isGoogleSheetsConfigured();
-  if (!configured) {
+  const sheetId = getEffectiveSheetId();
+  const webAppUrl = getEffectiveWebAppUrl();
+
+  if (configured) {
+    try {
+      const sheets = getGoogleSheetsClient();
+      const res = await sheets.spreadsheets.get({ spreadsheetId: sheetId });
+      return {
+        type: "google_sheets" as const,
+        configured: true,
+        spreadsheetTitle: res.data.properties?.title || "Google Sheets Connected",
+        sheetId: sheetId,
+        message: "Terhubung langsung ke Google Sheets API (Service Account)",
+      };
+    } catch (error: unknown) {
+      const err = error as Error;
+      return {
+        type: "google_sheets_error" as const,
+        configured: true,
+        message: `Gagal mengakses Google Sheets API: ${err.message}`,
+        sheetId: sheetId,
+      };
+    }
+  }
+
+  // If Service Account is not set, Direct Sync via CSV Export and Apps Script is active
+  if (sheetId) {
     return {
-      type: "local" as const,
-      configured: false,
-      message: "Menggunakan database lokal (Konfigurasi Google Sheets belum diisi di .env.local)",
-      sheetId: null,
+      type: "google_sheets_direct" as const,
+      configured: true,
+      spreadsheetTitle: "Packaging Weighing Sheet (Direct Sync)",
+      sheetId: sheetId,
+      webAppConfigured: Boolean(webAppUrl),
+      message: "Terhubung via Direct Google Sheets & Google Apps Script Sync",
     };
   }
 
-  try {
-    const sheets = getGoogleSheetsClient();
-    const sheetId = process.env.GOOGLE_SHEET_ID!;
-    const res = await sheets.spreadsheets.get({ spreadsheetId: sheetId });
-    return {
-      type: "google_sheets" as const,
-      configured: true,
-      spreadsheetTitle: res.data.properties?.title || "Google Sheets Connected",
-      sheetId: sheetId,
-      message: "Terhubung langsung ke Google Sheets API",
-    };
-  } catch (error: unknown) {
-    const err = error as Error;
-    return {
-      type: "google_sheets_error" as const,
-      configured: true,
-      message: `Gagal mengakses Google Sheets: ${err.message}`,
-      sheetId: process.env.GOOGLE_SHEET_ID,
-    };
-  }
+  return {
+    type: "local" as const,
+    configured: false,
+    message: "Menggunakan database lokal",
+    sheetId: null,
+  };
 }
 
-// -------------------------------------------------------------
 // -------------------------------------------------------------
 // MASTER PRODUK (Target Sheet: 'MasterProduk')
 // -------------------------------------------------------------
@@ -153,7 +631,7 @@ export const MASTER_PRODUK_SHEET_NAME = "MasterProduk";
 
 export async function fetchMasterProdukList(forceRefresh: boolean = false): Promise<MasterProduk[]> {
   const configured = isGoogleSheetsConfigured();
-  const sheetId = process.env.GOOGLE_SHEET_ID;
+  const sheetId = getEffectiveSheetId();
 
   // 1. Google Sheets API v4 (if GCP Service Account credentials provided)
   if (configured && sheetId) {
@@ -194,13 +672,13 @@ export async function fetchMasterProdukList(forceRefresh: boolean = false): Prom
     try {
       const cacheBust = forceRefresh ? `&_t=${Date.now()}` : "";
       const gvizUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(MASTER_PRODUK_SHEET_NAME)}${cacheBust}`;
-      const res = await fetch(gvizUrl, { next: { revalidate: forceRefresh ? 0 : 30 } });
+      const res = await fetch(gvizUrl, { cache: "no-store" });
       if (res.ok) {
         const text = await res.text();
         const XLSX = await import("xlsx");
-        const wb = XLSX.read(text, { type: "string" });
+        const wb = XLSX.read(text, { type: "string", raw: true });
         const ws = wb.Sheets[wb.SheetNames[0]];
-        const allRows = XLSX.utils.sheet_to_json<(string | number)[]>(ws, { header: 1, defval: "" });
+        const allRows = XLSX.utils.sheet_to_json<(string | number)[]>(ws, { header: 1, defval: "", raw: true });
 
         if (allRows.length > 1) {
           const dataRows = allRows.slice(1);
@@ -230,7 +708,7 @@ export async function fetchMasterProdukList(forceRefresh: boolean = false): Prom
 
   // 3. Fallback to cached local DB
   const db = getLocalDb();
-  return db.masterProduk;
+  return db.masterProduk && db.masterProduk.length > 0 ? db.masterProduk : DEFAULT_PRODUCTS;
 }
 
 export async function findMasterProdukByBatch(batchQuery: string): Promise<MasterProduk | null> {
@@ -253,7 +731,7 @@ export async function saveMasterProduk(item: MasterProduk): Promise<void> {
   }
 
   const sheets = getGoogleSheetsClient();
-  const sheetId = process.env.GOOGLE_SHEET_ID!;
+  const sheetId = getEffectiveSheetId();
 
   // Read existing to check if update or append
   const response = await sheets.spreadsheets.values.get({
@@ -323,7 +801,7 @@ export async function saveMasterProdukBulk(
   }
 
   const sheets = getGoogleSheetsClient();
-  const sheetId = process.env.GOOGLE_SHEET_ID!;
+  const sheetId = getEffectiveSheetId();
 
   const response = await sheets.spreadsheets.values.get({
     spreadsheetId: sheetId,
@@ -387,7 +865,7 @@ export async function deleteMasterProduk(batch: string): Promise<boolean> {
   }
 
   const sheets = getGoogleSheetsClient();
-  const sheetId = process.env.GOOGLE_SHEET_ID!;
+  const sheetId = getEffectiveSheetId();
 
   const response = await sheets.spreadsheets.values.get({
     spreadsheetId: sheetId,
@@ -431,7 +909,7 @@ export async function fetchUsersList(): Promise<User[]> {
 
   try {
     const sheets = getGoogleSheetsClient();
-    const sheetId = process.env.GOOGLE_SHEET_ID!;
+    const sheetId = getEffectiveSheetId();
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: sheetId,
       range: "Users!A2:F",
@@ -471,7 +949,7 @@ export async function saveUser(user: User): Promise<void> {
   }
 
   const sheets = getGoogleSheetsClient();
-  const sheetId = process.env.GOOGLE_SHEET_ID!;
+  const sheetId = getEffectiveSheetId();
 
   const response = await sheets.spreadsheets.values.get({
     spreadsheetId: sheetId,
@@ -486,7 +964,7 @@ export async function saveUser(user: User): Promise<void> {
     user.email,
     user.role,
     user.status,
-    user.password_hash || "",
+    user.password_hash,
   ];
 
   if (rowIndex >= 0) {
@@ -512,6 +990,26 @@ export async function saveUser(user: User): Promise<void> {
 // -------------------------------------------------------------
 const WEIGHING_SHEET_NAME = "Report";
 
+export function parseNumericValue(val: unknown): number | null {
+  if (val === undefined || val === null || val === "") return null;
+  if (typeof val === "number") return isNaN(val) ? null : val;
+  const str = String(val).trim().replace(/\s+/g, "").replace(",", ".");
+  const num = Number(str);
+  return isNaN(num) ? null : num;
+}
+
+export function parseDateValue(val: unknown): string {
+  if (!val) return "";
+  if (typeof val === "number" && val > 30000 && val < 60000) {
+    const excelEpoch = new Date(Date.UTC(1899, 11, 30));
+    const ms = val * 86400 * 1000;
+    const date = new Date(excelEpoch.getTime() + ms);
+    const pad = (n: number) => String(n).padStart(2, "0");
+    return `${date.getUTCFullYear()}-${pad(date.getUTCMonth() + 1)}-${pad(date.getUTCDate())} ${pad(date.getUTCHours())}:${pad(date.getUTCMinutes())}:${pad(date.getUTCSeconds())}`;
+  }
+  return String(val).trim();
+}
+
 function parseReportRows(rows: (string | number)[][]): HasilTimbangan[] {
   return rows
     .map((r, idx) => {
@@ -522,7 +1020,7 @@ function parseReportRows(rows: (string | number)[][]): HasilTimbangan[] {
 
       const session: HasilTimbangan = {
         id: String(r[0] || `WT-${idx + 1}`),
-        jam: String(r[1] || ""),
+        jam: parseDateValue(r[1]),
         batch: String(r[2] || ""),
         nama_produk: String(r[3] || ""),
         operator: String(r[4] || ""),
@@ -530,21 +1028,16 @@ function parseReportRows(rows: (string | number)[][]): HasilTimbangan[] {
         no_mesin,
         no_timbangan,
         metode_kemas: String(r[6] || ""),
-        lower: Number(r[7] || 0),
-        upper: Number(r[8] || 0),
+        lower: parseNumericValue(r[7]) ?? 0,
+        upper: parseNumericValue(r[8]) ?? 0,
       };
 
       for (let i = 1; i <= 15; i++) {
         const colIdx = 8 + i; // Col J is index 9 (8 + 1)
         const val = r[colIdx];
         const key = `timbang_${i}` as keyof HasilTimbangan;
-        if (val !== undefined && val !== "" && val !== null && !isNaN(Number(val))) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (session as any)[key] = Number(val);
-        } else {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (session as any)[key] = null;
-        }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (session as any)[key] = parseNumericValue(val);
       }
 
       return session;
@@ -552,9 +1045,9 @@ function parseReportRows(rows: (string | number)[][]): HasilTimbangan[] {
     .filter((s) => s.batch.length > 0 || s.id.length > 0);
 }
 
-export async function fetchHasilTimbanganList(): Promise<HasilTimbangan[]> {
+export async function fetchHasilTimbanganList(forceRefresh: boolean = false): Promise<HasilTimbangan[]> {
   const configured = isGoogleSheetsConfigured();
-  const sheetId = process.env.GOOGLE_SHEET_ID;
+  const sheetId = getEffectiveSheetId();
   const db = getLocalDb();
   const deletedSet = new Set((db.deletedIds || []).map((id) => id.toUpperCase()));
 
@@ -585,14 +1078,15 @@ export async function fetchHasilTimbanganList(): Promise<HasilTimbangan[]> {
   // Attempt reading via public CSV export if sheetId is present
   if (sheetId) {
     try {
-      const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=885811287`;
-      const res = await fetch(csvUrl);
+      const cacheBust = forceRefresh ? `&_t=${Date.now()}` : "";
+      const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=885811287${cacheBust}`;
+      const res = await fetch(csvUrl, { cache: "no-store" });
       if (res.ok) {
         const text = await res.text();
         const XLSX = await import("xlsx");
-        const wb = XLSX.read(text, { type: "string" });
+        const wb = XLSX.read(text, { type: "string", raw: true });
         const ws = wb.Sheets[wb.SheetNames[0]];
-        const allRows = XLSX.utils.sheet_to_json<(string | number)[]>(ws, { header: 1, defval: "" });
+        const allRows = XLSX.utils.sheet_to_json<(string | number)[]>(ws, { header: 1, defval: "", raw: true });
         // Rows 0 and 1 are headers; rows from index 2 onwards are data
         if (allRows.length > 2) {
           const dataRows = allRows.slice(2);
@@ -611,19 +1105,10 @@ export async function fetchHasilTimbanganList(): Promise<HasilTimbangan[]> {
 }
 
 export async function appendHasilTimbangan(session: HasilTimbangan): Promise<void> {
-  const sheetId = process.env.GOOGLE_SHEET_ID;
+  const sheetId = getEffectiveSheetId();
+  const webAppUrl = getEffectiveWebAppUrl();
 
   // Prepare 24 columns row matching Sheet 'Report' (A to X):
-  // Col A: No / ID Sesi
-  // Col B: Waktu
-  // Col C: Batch
-  // Col D: Nama Produk
-  // Col E: Operator
-  // Col F: No Mesin/Timbangan
-  // Col G: Metode
-  // Col H: Lower
-  // Col I: Upper
-  // Col J..X: Timbang 1 s/d 15
   const rowValues: (string | number)[] = [
     session.id,
     session.jam,
@@ -647,35 +1132,47 @@ export async function appendHasilTimbangan(session: HasilTimbangan): Promise<voi
   }
 
   // 1. Google Apps Script Web App Bridge (if configured)
-  const webAppUrl = process.env.GOOGLE_SCRIPT_WEBAPP_URL;
   if (webAppUrl) {
-    const res = await fetch(webAppUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        action: "appendWeighing",
-        sheetName: WEIGHING_SHEET_NAME,
-        rowValues,
-      }),
-    });
-    if (!res.ok) {
-      const text = await res.text();
-      throw new Error(`Google Apps Script error (${res.status}): ${text}`);
-    }
-    // Update local cache
     try {
-      const db = getLocalDb();
-      db.hasilTimbangan.unshift(session);
-      saveLocalDb(db);
-    } catch {}
-    return;
+      const res = await fetch(webAppUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "appendWeighing",
+          sheetName: WEIGHING_SHEET_NAME,
+          rowValues,
+        }),
+        redirect: "follow",
+      });
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Google Apps Script error (${res.status}): ${text}`);
+      }
+      // Update local cache
+      try {
+        const db = getLocalDb();
+        db.hasilTimbangan.unshift(session);
+        saveLocalDb(db);
+      } catch {}
+      return;
+    } catch (scriptErr) {
+      console.warn("Google Apps Script append error, attempting alternative:", scriptErr);
+      if (!isGoogleSheetsConfigured()) {
+        const db = getLocalDb();
+        if (!db.hasilTimbangan.some((s) => s.id === session.id)) {
+          db.hasilTimbangan.unshift(session);
+          saveLocalDb(db);
+        }
+        return;
+      }
+    }
   }
 
   // 2. Google Sheets API v4 with Service Account
   if (isGoogleSheetsConfigured()) {
     const sheets = getGoogleSheetsClient();
     await sheets.spreadsheets.values.append({
-      spreadsheetId: sheetId!,
+      spreadsheetId: sheetId,
       range: `${WEIGHING_SHEET_NAME}!A:X`,
       valueInputOption: "USER_ENTERED",
       requestBody: {
@@ -716,29 +1213,22 @@ export async function deleteHasilTimbangan(id: string): Promise<boolean> {
   if (isGoogleSheetsConfigured()) {
     try {
       const sheets = getGoogleSheetsClient();
-      const sheetId = process.env.GOOGLE_SHEET_ID!;
+      const sheetId = getEffectiveSheetId();
       const response = await sheets.spreadsheets.values.get({
         spreadsheetId: sheetId,
-        range: `${WEIGHING_SHEET_NAME}!A3:X`,
+        range: `${WEIGHING_SHEET_NAME}!A3:A`,
       });
       const rows = response.data.values || [];
-      const remainingRows = rows.filter((r) => String(r[0] || "").trim().toUpperCase() !== normId);
-      if (remainingRows.length !== rows.length) {
+      const rowIndex = rows.findIndex((r) => String(r[0] || "").trim().toUpperCase() === normId);
+      if (rowIndex >= 0) {
+        const targetRow = rowIndex + 3;
         await sheets.spreadsheets.values.clear({
           spreadsheetId: sheetId,
-          range: `${WEIGHING_SHEET_NAME}!A3:X`,
+          range: `${WEIGHING_SHEET_NAME}!A${targetRow}:X${targetRow}`,
         });
-        if (remainingRows.length > 0) {
-          await sheets.spreadsheets.values.update({
-            spreadsheetId: sheetId,
-            range: `${WEIGHING_SHEET_NAME}!A3:X${remainingRows.length + 2}`,
-            valueInputOption: "USER_ENTERED",
-            requestBody: { values: remainingRows },
-          });
-        }
       }
     } catch (err) {
-      console.warn("Gagal menghapus baris dari Google Sheets API:", err);
+      console.warn("Could not remove from Google Sheets directly:", err);
     }
   }
 
@@ -761,7 +1251,6 @@ export async function clearAllDummyHasilTimbangan(): Promise<number> {
   return count;
 }
 
-
 /**
  * Initialize sheets structure and headers if Google Sheets is configured
  */
@@ -772,7 +1261,7 @@ export async function initializeGoogleSheetsStructure(): Promise<{ success: bool
 
   try {
     const sheets = getGoogleSheetsClient();
-    const sheetId = process.env.GOOGLE_SHEET_ID!;
+    const sheetId = getEffectiveSheetId();
 
     const headersMasterProduk = [["Batch", "Nama_Produk", "Status", "Keterangan"]];
     const headersUsers = [["User_ID", "Nama", "Email", "Role", "Status", "Password_Hash"]];
