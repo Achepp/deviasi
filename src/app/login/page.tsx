@@ -280,11 +280,11 @@ export default function LoginPage() {
                     <rect x="214" y="16" width="46" height="26" rx="4" fill="#0F172A" stroke="#38BDF8" strokeWidth="1" />
                     <rect x="217" y="19" width="40" height="20" rx="2" fill="#021526" />
                     {/* Screen Text: 500.00 g (decorative sample) */}
-                    <text x="220" y="29" fill="#38BDF8" fontSize="6.5" fontFamily="monospace" fontWeight="bold">
+                    <text x="220" y="29" fill="#38BDF8" fontSize="6.5" fontFamily="var(--font-plus-jakarta-sans), 'Plus Jakarta Sans', monospace" fontWeight="bold">
                       500.00g
                     </text>
                     <rect x="220" y="32" width="16" height="5" rx="1" fill="#10B981" />
-                    <text x="222" y="36" fill="#FFFFFF" fontSize="4.5" fontFamily="sans-serif" fontWeight="bold">
+                    <text x="222" y="36" fill="#FFFFFF" fontSize="4.5" fontFamily="var(--font-plus-jakarta-sans), 'Plus Jakarta Sans', sans-serif" fontWeight="bold">
                       PASS
                     </text>
                   </g>

@@ -69,7 +69,7 @@ export default function AdminDashboardPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
-            Ringkasan Monitoring Produksi
+            Ringkasan Monitoring Deviasi
           </h1>
         </div>
 

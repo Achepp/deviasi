@@ -387,7 +387,7 @@ export default function WeighingForm({ user, onSessionSaved }: WeighingFormProps
             {/* Input Kode Batch */}
             <div>
               <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-                Nomor / Kode Batch <span className="text-rose-500">*</span>
+                No Batch <span className="text-rose-500">*</span>
               </label>
               <div className="relative">
                 <input
@@ -446,7 +446,6 @@ export default function WeighingForm({ user, onSessionSaved }: WeighingFormProps
                 type="text"
                 value={productName}
                 readOnly
-                placeholder="Nama produk terisi otomatis dari Google Sheets..."
                 className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-800 dark:text-slate-200 text-xs sm:text-sm font-medium focus:outline-none cursor-not-allowed select-none"
               />
               
@@ -476,7 +475,6 @@ export default function WeighingForm({ user, onSessionSaved }: WeighingFormProps
                 type="text"
                 value={noMesin}
                 onChange={(e) => setNoMesin(e.target.value)}
-                placeholder="MSN-01"
                 required
                 className="w-full px-3 py-2 bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-xs sm:text-sm focus:ring-2 focus:ring-blue-600 outline-none"
               />
@@ -490,7 +488,6 @@ export default function WeighingForm({ user, onSessionSaved }: WeighingFormProps
                 type="text"
                 value={noTimbangan}
                 onChange={(e) => setNoTimbangan(e.target.value)}
-                placeholder="TB-01"
                 required
                 className="w-full px-3 py-2 bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-xs sm:text-sm focus:ring-2 focus:ring-blue-600 outline-none"
               />
@@ -505,19 +502,16 @@ export default function WeighingForm({ user, onSessionSaved }: WeighingFormProps
                 onChange={(e) => setMetodeKemas(e.target.value)}
                 className="w-full px-3 py-2 bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-xs sm:text-sm focus:ring-2 focus:ring-blue-600 outline-none"
               >
-                <option value="Standing Pouch">Standing Pouch</option>
-                <option value="Sachet Aluminium">Sachet Aluminium</option>
-                <option value="Box Karton">Box Karton</option>
-                <option value="Botol PET">Botol PET</option>
-                <option value="Vaccum Bag">Vacuum Bag</option>
-                <option value="Kemasan Kaleng">Kemasan Kaleng</option>
+                <option value="Standing Pouch">Shuangfeng</option>
+                <option value="Sachet Aluminium">Manual</option>
+                <option value="Box Karton">Devree</option>
               </select>
             </div>
 
             {/* Lower Limit */}
             <div>
               <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                Batas Bawah (Lower) [g] <span className="text-rose-500">*</span>
+                Batas Bawah (Lower) <span className="text-rose-500">*</span>
               </label>
               <input
                 type="number"
@@ -533,7 +527,7 @@ export default function WeighingForm({ user, onSessionSaved }: WeighingFormProps
             {/* Upper Limit */}
             <div>
               <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                Batas Atas (Upper) [g] <span className="text-rose-500">*</span>
+                Batas Atas (Upper) <span className="text-rose-500">*</span>
               </label>
               <input
                 type="number"
@@ -570,11 +564,8 @@ export default function WeighingForm({ user, onSessionSaved }: WeighingFormProps
               </div>
               <div>
                 <h3 className="font-bold text-sm text-slate-900 dark:text-white leading-tight">
-                  Hasil Pengukuran Penimbangan (1 s/d 15)
-                </h3>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
-                  Isi hasil penimbangan sesuai kebutuhan. Tidak wajib mengisi 15 nilai.
-                </p>
+                  Hasil Pengukuran Penimbangan
+                </h3>  
               </div>
             </div>
 

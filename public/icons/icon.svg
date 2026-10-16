@@ -14,9 +14,9 @@
   
   <!-- Digital Display Panel -->
   <rect x="86" y="86" width="340" height="120" rx="20" fill="#0f172a" stroke="#38bdf8" stroke-width="6"/>
-  <text x="256" y="165" font-family="monospace, sans-serif" font-size="56" font-weight="bold" fill="#38bdf8" text-anchor="middle" letter-spacing="4">500.0 g</text>
+  <text x="256" y="165" font-family="'Plus Jakarta Sans', monospace, sans-serif" font-size="56" font-weight="bold" fill="#38bdf8" text-anchor="middle" letter-spacing="4">500.0 g</text>
   <circle cx="116" cy="116" r="6" fill="#22c55e" />
-  <text x="132" y="121" font-family="sans-serif" font-size="14" fill="#94a3b8">IN SPEC</text>
+  <text x="132" y="121" font-family="'Plus Jakarta Sans', sans-serif" font-size="14" fill="#94a3b8">IN SPEC</text>
 
   <!-- Scale Platform & Base -->
   <path d="M 64 340 L 448 340 L 410 400 L 102 400 Z" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="4"/>
